@@ -14,6 +14,12 @@ const setUserAgent = async (req, res) => {
 }
 // User Agent Function End
 
+// Respond to Base 64 Start 
+const base64Respond = async (req, res) => {
+  const phrase = req.url.replace(/^\/b64\//, '')
+  res.end(JSON.stringify({ b64: Buffer.from(phrase).toString('base64') }))
+}
+//Respond to Base 64 End 
 
 // Url IMplementation
 const server = http.createServer((req, res) => {
@@ -23,13 +29,22 @@ const server = http.createServer((req, res) => {
       break;
     case "/user-agent":
       return setUserAgent(req, res)
-      return
+      break;
     default:
+      if (req.url.match(/^\/b64\//)) {
+        return base64Respond(req, res);
+      } else {
+        return res.end(JSON.stringify({ msg: "Bad Request!" }))
+      }
       break;
   }
   res.end()
 })
 // Url IMplementation
+
+
+
+
 
 function respondHello(req, res) {
   res.end(JSON.stringify({ msg: 'hello' }))

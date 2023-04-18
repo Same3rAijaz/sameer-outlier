@@ -27,6 +27,18 @@ tape('should respond user-agent', (t) => {
 })
 // User Agent Testing End
 
+// B64 Testing Start
+tape('should respond b64', (t) => {
+  jsonist.get(`${urlBase}/b64/hello`, (err, body) => {
+    if (err) t.error(err)
+
+    t.equal(body.b64, 'aGVsbG8=')
+    t.end()
+  })
+})
+// B64 Testing End
+
+
 tape('cleanup', function (t) {
   server.close()
   t.end()
